@@ -10,11 +10,13 @@ type Person struct {
 	Name   string
 	Age    int `hash:"-"`
 	Parent *Person
+	Hash   Hash
 }
 
 // NewPerson creates a new Person with a Hasher.
 func NewPerson(name string, age int, parent *Person) *Person {
 	p := &Person{Name: name, Age: age, Parent: parent}
+	p.Hash = ComputeHash(p)
 	return p
 }
 
@@ -25,10 +27,16 @@ func TestComputeHash(t *testing.T) {
 	parentHash := ComputeHash(parent)
 	personHash := ComputeHash(person)
 
-	if fmt.Sprintf("%x", parentHash) != "01332c876518a793b7c1b8dfaf6d4b404ff5db09b21c6627ca59710cc24f696a" {
+	if fmt.Sprintf("%x", parentHash) != fmt.Sprintf("%x", parent.Hash) {
 		t.Errorf("Unexpected value for parentHash")
 	}
-	if fmt.Sprintf("%x", personHash) != "2c34e78797862b4012fea78fb69a81206fc236786aea7932ce36df43788cfde5" {
+	if fmt.Sprintf("%x", personHash) != fmt.Sprintf("%x", person.Hash) {
+		t.Errorf("Unexpected value for personHash")
+	}
+	if fmt.Sprintf("%x", parentHash) != "2d6101098438c11b4eaacc32d13b26d0b7ef1670037fcaf5742541b9f0d375f6" {
+		t.Errorf("Unexpected value for parentHash")
+	}
+	if fmt.Sprintf("%x", personHash) != "b0f306193dddc919d3d1c4592ff5e3d9d20f5d2d804ad1b3f743eaa5c62df5d5" {
 		t.Errorf("Unexpected value for personHash")
 	}
 }
