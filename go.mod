@@ -1,3 +1,3 @@
-module github.com/atlasgurus/Hasher
+module github.com/atlasgurus/hasher
 
 go 1.18
